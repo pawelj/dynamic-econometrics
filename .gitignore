@@ -6,3 +6,9 @@
 *.snm
 *.toc
 *.ini
+*.csv
+*.rds
+*.r
+*.docx
+*.lyx
+*.txt
