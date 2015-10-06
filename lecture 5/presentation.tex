@@ -1,0 +1,226 @@
+\documentclass[a4paper, 11pt]{beamer}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{units}
+\usepackage{wasysym}
+
+\mode<presentation> {
+	\usetheme{Frankfurt}
+	\setbeamercovered{transparent}
+	\usecolortheme{default}
+}
+
+\title{Ekonometria Dynamiczna}
+\subtitle{Analiza kointegracji}
+\author{mgr Paweł Jamer\thanks{pawel.jamer@gmail.com}}
+
+\begin{document}
+
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	\section{Integracja}
+
+	\begin{frame}{Integracja}
+		\begin{block}{\textbf{Definicja integracji}}
+			Szereg czasowy $X_t$ nazwiemy zintegrowanym w stopniu $d$ jeżeli szereg czasowy \[
+				\Delta^{d} X_t
+			\] jest stacjonarny oraz dla każdego $d^{\prime} < d$ szereg czasowy $\Delta^{d^{\prime}} X_t$ nie jest stacjonarny.
+		\end{block}
+		\begin{alert}{\textbf{Oznaczenie.}}
+			Szereg czasowy $X_t$ zintegrowany w stopniu $d$ oznaczamy symbolem \[
+				X_t \sim I\left(d\right).
+			\]
+		\end{alert}
+		\begin{alert}{\textbf{Uwaga.}}
+			Stacjonarny szereg czasowy $X_t$ jest zintegrowany w stopniu $0,$ tzn. \[
+				X_t \sim I\left(0\right).
+			\]
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Badanie integracji}
+		Integrację szeregów czasowych możemy badać wykorzystując:
+		\begin{itemize}
+			\item testy DF oraz ADF,
+			\item integracyjną statystykę Durbina-Watsona.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Testy DF oraz ADF}
+		W przypadku testów DF oraz ADF hipotezy testowe zapisać możemy w postaci \[
+			\begin{cases}
+				H_0: & X_t \sim I\left(1\right),\\
+				H_1: & X_t \sim I\left(0\right).
+			\end{cases}
+		\] Tak zapisane hipotezy są de facto najbardziej naturalnym sposobem wyrażenia
+		idei na jakiej bazują te testy.
+	\end{frame}
+	
+	\begin{frame}{Integracyjna statystyka Durbina-Watsona}
+		\begin{block}{\textbf{Integracyjna statystyka Durbina-Watsona}} \[
+			IDW = \frac{\sum_{t=2}^{T}\left(\Delta X_{t}\right)^{2}}{\sum_{t=1}^{T}\left(X_{t} - \overline{X}_t\right)^2}.
+		\]
+		\end{block}
+		\textbf{Interpretacja:}
+		\begin{itemize}
+			\item wartości statystyki IDW bliskie $0$ sugerują występowanie kointegracji w stopniu $d \geq 1,$
+			\item wartości statystyki IDW bliskie $2$ sugerują stacjonarność, tzn.~kointegrację w stopniu $d = 0.$
+		\end{itemize}
+		\begin{alert}{\textbf{Uwaga.}}
+			Możemy przyjąć, że przy poziomie istotności $0.01$ oraz próbie 100 elementowej
+			wartość statystyki IDW potrzebna do uzyskania integracji w stopniu $d \geq 1$
+			powinna być niższa niż $0.5.$
+		\end{alert}
+	\end{frame}
+	
+	\section{Kointegracja}
+	
+	\begin{frame}{Regresja pozorna}
+		\begin{flushleft}
+			Kiedy zmienne objaśniające wykazują podobny trend do zmiennej objaśnianej możemy spotkać się z sytuacją regresji pozornej.
+		\end{flushleft}
+		\begin{flushleft}
+			\begin{alert}{\textbf{Przykład.}}
+				Związek zachodzący między liczbą narodzin oraz liczbą śmierci.
+			\end{alert}
+		\end{flushleft}
+		\textbf{Problemy:}
+		\begin{itemize}
+			\item współczynniki regresji mogą być statystycznie istotne,
+			\item wartość współczynnika determinacji może być wysoka,
+			\item oszacowany model nie opisuje dobrze badanego zjawiska.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Problem}
+		\textbf{Problem:}
+		\begin{itemize}
+			\item Bazowanie na niestacjonarnych szeregach czasowych podczas 
+				budowania modeli może prowadzić do pojawiania się problemu
+				regresji pozornej.
+			\item Sprowadzając niestacjonarne szeregi czasowe do postaci
+				stacjonarnej (poprzez różnicowanie lub eliminację trendu) odbieramy
+				sobie możliwość analizowania zależności długookresowych.
+		\end{itemize}
+		\begin{center}
+			\textbf{
+				Czy istnieją sytuacje, w których wolno nam bezpiecznie operować na
+					zmiennych niestacjonarnych?
+			}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Definicja}
+		\begin{alert}{\textbf{Idea.}}
+			Chcemy wiedzieć, czy bazując na pewnej grupie niestacjonarnych 
+			szeregów czasowych możemy bezpiecznie zbudować model.
+		\end{alert}
+		\begin{block}{\textbf{Kointegracja}}
+			Powiemy, że szeregi czasowe $X_{1,t}, X_{2,t}, \ldots, X_{n,t}$ są skointegrowane w stopniu $\left(d,b\right),$ jeżeli dla każdego $i=1,2,\ldots,n$ zachodzi \[
+				X_{i,t} \sim I\left(d\right)
+			\] oraz istnieją takie wartości $\beta_1,\beta_2,\ldots,\beta_n,$ że \[
+				\beta_1 X_{1,t} + \beta_2 X_{2,t} + \ldots + \beta_n X_{n,t} \sim I\left(d - b\right).
+			\]
+		\end{block}
+		\begin{alert}{\textbf{Intuicja.}}
+			Relacje pomiędzy skointegrowanymi niestacjonarnymi szeregami 
+			czasowymi pozostają w długiej perspektywie czasowej niezmienne.
+		\end{alert}
+	\end{frame}
+
+	\begin{frame}{Testowanie}
+		Istnieją dwie powszechnie stosowane metody testowania kointegracji:
+		\begin{itemize}
+			\item dwustopniowa procedura Engle'a-Grangera -- prostsza, 
+				posiadająca liczne ograniczenia,
+			\item metoda Johansena -- złożona, dająca dokładne informacje na temat
+				kointegracji badanych szeregów czasowych.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Procedura Engle'a-Grangera}
+		\begin{enumerate}
+			\item Należy zweryfikować czy wszystkie analizowane szeregi czasowe 
+				charakteryzuje ten sam stopień integracji.
+			\item Należy zbudować model regresji liniowej wielorakiej w którym 
+				jeden z analizowanych szeregów pełni rolę zmiennej objaśnianej, 
+				pozosałe natomiast zmiennych objaśniających.
+			\item Należy przetestować stopień integracji reszt wyznaczonego w 
+				poprzednim kroku modelu.
+		\end{enumerate}
+	\end{frame}
+	
+	\section{Model korekty błędem (ECM)}
+	
+	\begin{frame}{Definicja}
+		\begin{block}{\textbf{Model korekty błędem (ECM)}}
+			\[
+				\Delta y_{t} =
+					\mu +
+					\alpha \left(y_{t-1} - \beta_{0} - \beta_{1} x_{t-1}\right) + 
+					\sum_{i=1}^{k-1} \theta_{i} \Delta y_{t-i} + 
+					\sum_{i=0}^{k-1} \gamma_{i} \Delta x_{t-i} + 
+					\epsilon_{t}
+			\]
+		\end{block}
+		\textbf{Interpretacja:}
+		\begin{itemize}
+			\item $y_{t-1} = \beta_{0} + \beta_{1} x_{t-1}$ --- równanie równowagi
+				długookresowej,
+			\item $y_{t-1} - \beta_{0} - \beta_{1} x_{t-1}$ --- odchylenie od 
+				równowagi długookr.,
+			\item $\alpha$ --- współczynnik opisujący szybkość dostosowywania się 
+				zmiennej objaśnianej do poziomu równowagi długookresowej (w 
+				stabilnym modelu $\alpha < 0$).
+			\item $\theta_{i}, \gamma_{i}$ --- współczynniki opisujące dynamikę
+				krótkookresową.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Stosowalność}
+		\begin{alert}{\textbf{Uwaga.}}
+			Twierdzenie Grangera o reprezentacji gwarantuje nam możliwość
+			zastosowania mechanizmu korekty błędem względem skointegrowanych
+			szeregów czasowych.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Estymacja}
+		\begin{enumerate}
+			\item Estymacja parametrów równania równowagi długookresowej \[
+				y_{t-1} = \beta_{0} + \beta_{1} x_{t-1}.
+			\]
+			\item Skonstruowanie szeregów czasowych \begin{eqnarray*}
+				\epsilon_{t} & = & y_{t} - \beta_{0} - \beta_{1} x_{t},\\
+				\Delta x_{t} & = & x_{t} - x_{t-1},\\
+				\Delta y_{t} & = & y_{t} - y_{t-1}.\\
+			\end{eqnarray*}
+			\item Estymacja parametrów równania modelu korekty błędem \[
+				\Delta y_{t} =
+					\mu +
+					\alpha \epsilon_{t-1} + 
+					\sum_{i=1}^{k-1} \theta_{i} \Delta y_{t-i} + 
+					\sum_{i=0}^{k-1} \gamma_{i} \Delta x_{t-i} + 
+					\epsilon_{t}
+			\]
+		\end{enumerate}
+	\end{frame}
+
+	\section*{}
+
+	\begin{frame}
+		\center
+		\Huge \bfseries
+		Pytania?
+	\end{frame}
+
+	\begin{frame}
+		\center
+		\Huge \bfseries
+		Dziękuję za uwagę!
+	\end{frame}
+
+\end{document}

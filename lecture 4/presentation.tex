@@ -1,0 +1,419 @@
+\documentclass[a4paper, 11pt]{beamer}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{units}
+\usepackage{wasysym}
+
+\mode<presentation> {
+	\usetheme{Frankfurt}
+	\setbeamercovered{transparent}
+	\usecolortheme{default}
+}
+
+\title{Ekonometria Dynamiczna}
+\subtitle{Wybrane modele jednowymiarowych szeregów czasowych}
+\author{mgr Paweł Jamer\thanks{pawel.jamer@gmail.com}}
+
+\begin{document}
+
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	\section{Przegląd procesów ARMA}
+
+	\begin{frame}{Biały szum}
+		\begin{block}{\textbf{Biały szum}}
+			Białym szumem nazwiemy szereg czasowy $\epsilon_t$ niezależnych zmiennych losowych o tym samym rozkładzie taki, że \begin{eqnarray*}
+				\mathbb{E}\left(\epsilon_t\right) & = & 0,\\
+				\mbox{Var}\left(\epsilon_t\right) & = & \sigma^2.
+			\end{eqnarray*} Biały szum oznaczać będziemy symbolem $\mbox{WN}\left(0, \sigma^2\right)$.
+		\end{block}
+		\begin{alert}{\textbf{Uwaga}}
+			Bardziej złożone modele szeregów czasowych wykorzystują biały szum do opisu niepewności pomiaru opisywanych przez nie wielkości.
+		\end{alert}
+	\end{frame}
+
+	\begin{frame}{Proces MA}
+		Zdefiniujmy operator \[
+			\theta\left(B\right) = I + \theta_{1} B + \ldots +\theta_{q} B^{q},
+		\] gdzie $q \in \mathbb{Z}_{+}.$
+		\begin{block}{\textbf{Proces MA}}
+			Słabo stacjonarny szereg czasowy $X_t$ nazwiemy procesem MA (średniej ruchomej) rzędu $q,$ jeżeli spełnia on równanie \[
+				X_t = \theta\left(B\right) \epsilon_{t},
+			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$ Proces MA rzędu $q$ oznaczać będziemy symbolem $\mbox{MA}\left(q\right)$.
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Właściwości procesu MA}
+		\begin{itemize}
+			\item Wartość oczekiwana: \[
+				\mathbb{E}\left(X_{t}\right) = 0.
+			\]
+			\item Funkcja autokowariancji: \[
+				\gamma_{X}\left(h\right) = \begin{cases}
+					\left(\sum_{i=0}^{q-\left|h\right|}\theta_{i}\theta_{i+\left|h\right|}\right)\sigma^{2} & \left|h\right|\leq q,\\
+					0, & \left|h\right|>q.
+				\end{cases}
+			\]
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Proces AR}
+		Zdefiniujmy operator \[
+			\varphi\left(B\right) = I - \varphi_{1} B - \ldots - \varphi_{p} B^{p},
+		\] gdzie $p \in \mathbb{Z}_{+}.$
+		\begin{block}{\textbf{Proces AR}}
+			Słabo stacjonarny szereg czasowy $X_t$ nazwiemy procesem AR (autoregresyjnym) rzędu $p,$ jeżeli spełnia on równanie \[
+				\varphi\left(B\right) X_t = \epsilon_{t},
+			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$ Proces AR rzędu $p$ oznaczać będziemy symbolem $\mbox{AR}\left(p\right)$.
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Właściwości procesu AR}
+		\begin{itemize}
+			\item Proces spełniający równanie procesu AR(p) jest stacjonarny, gdy pierwiastki wielomianu \[
+				z^{p} - \sum_{i=1}^{p} \varphi_{i} z^{p-i}
+			\] leżą wewnątrz okręgu jednostkowego.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Związek procesów AR i MA}
+		Proces $\mbox{AR}\left(1\right)$ zapisać możemy w postaci \[
+			X_t = \varphi X_{t-1} + \epsilon_{t},
+		\] a następnie rozpisać jego prawą stronę do postaci \begin{eqnarray*}
+			X_t & = & \varphi^{m+1} X_{t-(m+1)} + \sum_{j=0}^{m} \varphi^{j} \epsilon_{t - j},
+		\end{eqnarray*} którą po przeprowadzeniu stosownego rozumowania zapisać można jako proces $\mbox{MA}\left(\infty\right):$ \[
+			X_t = \sum_{j = 0}^{\infty} \varphi^{j} \epsilon_{t - j}.
+		\]
+		\begin{alert}{\textbf{Wniosek}}
+			Procesy $\mbox{MA}\left(q\right)$ przy odpowiednio dużym $q$ zaczynają upodabniać się do procesu $\mbox{AR}\left(1\right).$
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Proces ARMA}
+		\begin{block}{\textbf{Proces ARMA}}
+			Słabo stacjonarny szereg czasowy $X_t$ nazwiemy procesem $\mbox{ARMA}\left(p, q\right),$ jeżeli spełnia on równanie \[
+				\varphi\left(B\right) X_t = \theta\left(B\right) \epsilon_{t},
+			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Stacjonarność procesów ARMA}
+		\begin{block}{\textbf{TWIERDZENIE}}
+			Jeżeli $\varphi\left(z\right) \neq 0$ dla $\left|z\right| = 1,$ to równanie procesu $\mbox{ARMA}\left(p, q\right)$ \[
+				\varphi\left(B\right) X_t = \theta\left(B\right) \epsilon_{t}
+			\] posiada jednoznaczne rozwiązanie stacjonarne postaci \[
+				X_t = \sum_{j=-\infty}^{\infty} \psi_{j} \epsilon_{t - j} = \psi\left(B\right) \epsilon_{t}.
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Proces ARIMA}
+		\begin{block}{\textbf{Proces ARIMA}}
+			Szereg czasowy $X_t$ nazwiemy procesem $\mbox{ARIMA}\left(p, d, q\right),$ jeżeli
+			szereg czasowy $\Delta^{d} X_t$ jest procesem $\mbox{ARMA}\left(p, q\right).$
+		\end{block}
+		Bezpośrednio z powyższej definicji wynika, że proces $\mbox{ARIMA}\left(p, d, q\right)$ charakteryzuje następujące równanie: \[
+			\varphi\left(B\right)\left(\Delta^{d} X_{t}\right) = \theta\left(B\right) \epsilon_{t}.
+		\]
+	\end{frame}
+	
+	\begin{frame}{Pierwiastek jednostkowy}
+		Równanie procesu $\mbox{ARIMA}\left(p, d, q\right)$ możemy zapisać jako: \begin{eqnarray*}
+			\varphi\left(B\right)\left(I - B\right)^{d} X_{t} & = & \theta\left(B\right) \epsilon_{t},\\
+			\varphi^{*}\left(B\right) X_{t} & = & \theta\left(B\right) \epsilon_{t},
+		\end{eqnarray*} gdzie \[
+			\varphi^{*}\left(B\right) = \varphi\left(B\right)\left(I - B\right)^{d}.
+		\]
+		\begin{alert}{\textbf{Wniosek}}
+			Wielomian $\varphi^{*}\left(z\right)$ ma pierwiastek d-krotny w jedynce.
+		\end{alert}
+	\end{frame}
+	
+	\section{Estymacja parametrów procesów ARMA}
+	
+	\begin{frame}{Metody estymacji parametrów $\varphi_{j}$ i $\theta_{j}$}
+		\begin{itemize}
+			\item Równania Yule'a-Walkera
+			\item Algorytm Innowacyjny
+			\item Metoda Warunkowych Najmniejszych Kwadratów
+			\item Estymator Hannana-Riesannena
+			\item M-estymator
+			\item ...
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Estymator Hannana-Riesannena (idea)}
+		Rozważamy model postaci \[
+			X_{t} = \varphi_{1} X_{t-1} + \ldots + \varphi_{p} X_{t-p}
+				+ \epsilon_{t} + \theta_{1} \epsilon_{t-1} + \ldots + \theta_{q} \epsilon_{t-q}.
+		\] Chcemy wyestymować metodą najmniejszych kwadratów parametry $\varphi_{1}, \varphi_{2}, \ldots, \varphi_{p}$ oraz $\theta_{1},
+		\theta_{2}, \ldots, \theta_{q},$ przy założeniu znanych wartości parametrów $p$ i $q.$
+		\begin{center}
+			\begin{alert}{\textbf{Problem}}
+				Wartości białego szumu $\epsilon_{t}$ są nieobserwowalne.
+			\end{alert}		
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Estymator Hannana-Riesannena (algorytm)}
+		Niech $n \geq m \geq \max\left(p, q\right).$
+		\begin{enumerate}
+			\item Dopasowujemy model $\mbox{AR}\left(m\right).$
+			\item Z dopasowanego modelu estymujemy \[
+				\hat{\epsilon}_{t} = X_{t} - \sum_{j=1}^{m} \hat{\varphi}_{j} X_{t-j}
+			\] dla $t = m + 1, m + 2, \ldots, n.$
+			\item Dopasowujemy model regresji ze zmiennymi objaśniającymi $X_t, X_{t-1}, \ldots, X_{t-p}$ oraz
+				$\hat{\epsilon}_{t}, \hat{\epsilon}_{t-1}, \ldots, \hat{\epsilon}_{t-q}$ i zmienną objaśnianą $X_{t}.$
+		\end{enumerate}
+	\end{frame}
+	
+	\begin{frame}{Dobór parametrów $p$ i $q$ (kryteria informacyjne)}
+		Niech $L_{p,q}$ oznacza wiarogoność modelu $\mbox{ARMA}\left(p, q\right).$
+		\begin{block}{\textbf{Kryterium informacyjne Akaike (AIC)}}
+			\[
+				\mbox{AIC}_{p,q} = -2\ln L_{p,q} + 2\left(p + q + 1\right)
+			\]
+		\end{block}
+		\begin{block}{\textbf{Bayesowskie kryterium informacyjne (BIC)}}
+			\[
+				\mbox{BIC}_{p,q} = -2\ln L_{p,q} + \left(p + q + 1\right) \ln T
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Dobór parametrów $p$ i $q$ (kryterium FPE)}
+		Rozpatrujemy proces $\mbox{AR}\left(p\right)$ postaci \[
+			X_{t} - \sum_{j=1}^{p} \varphi_{j} X_{t - j} = \epsilon_{t},
+		\] który daje się przedstawić w postaci \[
+			X_{t} = \sum_{j = 0}^{\infty} c_{j} \epsilon_{t - j}.
+		\]
+		\begin{block}{\textbf{Kryterium FPE (Final Prediction Error)}}
+			\[
+				\mbox{FPE}_{p,q} = \arg\min_{0\leq p \leq P} \left(\frac{T + p}{T - p} \hat{\sigma}_{NW}^{2}\right)
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Dobór parametrów $p$ i $q$ (wykresy ACF i PACF)}
+		\begin{flushleft}
+			\textbf{Autokorelacją częściową} zmiennych $X_{t}$ i $X_{t-m}$ nazywamy intuicyjnie taką autokorelację zmiennych
+				$X_{t}$ i $X_{t-m}$ z której wyeliminowano wpływ zmiennych $X_{t-1}, X_{t-2}, \ldots, X_{t-(m-1)}.$
+		\end{flushleft}
+	\end{frame}
+	
+	\begin{frame}{Dobór parametrów $p$ i $q$ (wykresy ACF i PACF)}
+		\begin{flushleft}
+			W przypadku procesu $\mbox{WN}\left(0, \sigma^2\right)$ wartości autokorelacji oraz częściowej autokorelacji powinny mieścić się w przedziale
+			ufności \[
+				\hat{\rho}_{i} \pm \frac{z_{1 - \nicefrac{\alpha}{2}}}{\sqrt{T}}
+			\]
+		\end{flushleft}
+		\begin{flushleft}
+			W przypadku procesu $\mbox{MA}\left(q\right)$ wartości autokorelacji przekraczają granice powyższego przedziału ufności.
+			Za rząd procesu MA przyjmujemy q równe autokorelacji o największym indeksie, która wykracza poza granice przedziału ufności.
+		\end{flushleft}
+		\begin{flushleft}
+			W przypadku procesu $\mbox{AR}\left(p\right)$ wartości autokorelacji częściowej prekraczają granice powyższego przedziału ufności.
+			Za rząd procesu AR przyjmujemy p równe autokorelacji częściowej o największym indeksie, która wykracza poza granice przedziału ufności.
+		\end{flushleft}
+	\end{frame}
+	
+	\section{Diagnostyka procesów ARMA}
+	
+	\begin{frame}{Estymaja korelacji}
+		\begin{block}{\textbf{Estymator kowariancji}} \[
+				\hat{\gamma}\left(h\right) = \frac{1}{n}
+					\sum_{i=1}^{n - \left|h\right|}
+					\left(X_{i} - \overline{X}_{n}\right)
+					\left(X_{i+\left|h\right|} - \overline{X}_{n}\right).
+			\]
+		\end{block}
+		\begin{block}{\textbf{Estymator korelacji}} \[
+				\hat{\rho}\left(h\right) = \frac{
+					\hat{\gamma}\left(h\right)
+				}{
+					\hat{\gamma}\left(0\right)
+				}.
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Testowanie autokorelacji}
+		Chcemy zbadać hipotezę testową: \[
+			H_{0}: \sum_{i=1}^{h} \rho^{2}\left(i\right) = 0.
+		\]
+		\begin{block}{\textbf{Test Ljunga-Boxa}} \[
+			T_{LB} = n \left(n + 2\right) \sum_{i=1}^{h}
+				\frac{\hat{\rho}^{2}\left(i\right)}{n - i} \rightarrow \chi^{2}_{h}.
+		\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Testowanie reszt}
+		\begin{enumerate}
+			\item Jeżeli model ARMA(p,q) opisany równaniem \[
+				\varphi\left(B\right)X_t = \theta\left(B\right)\epsilon_t
+			\] dobrze opisuje dane, to reszty $\epsilon_t$ powinny
+			być białym szumem.
+			\item	Powyższe stwierdzenie testujemy:
+			\begin{itemize}
+				\item analizując wykresy ACF oraz PACF,
+				\item przeprowadzając test Ljunga-Boxa.
+			\end{itemize}
+			\item Jeżeli reszty $\epsilon_t$ okażą się nie być białym szumem, to 
+			dopasowujemy do nich po raz kolejny model ARMA: \[
+				\varphi^{\prime}\left(B\right)\epsilon_t =
+					\theta^{\prime}\left(B\right)\eta_t,
+			\] gdzie $\eta_t$ powinna być białym szumem.
+		\end{enumerate}
+	\end{frame}
+	
+	\section{Przegląd pozosałych modeli}
+	
+	\begin{frame}{Model z rozkładem opóźnień DL}
+		\begin{block}{\textbf{Model ze skończonym rozkładem opóźnień}} \[
+				Y_{t} = \alpha + \sum_{i=0}^{k} \beta_{i} X_{t-i} + \epsilon_{t}.
+			\]
+		\end{block}
+		\begin{block}{\textbf{Model z nieskończonym rozkładem opóźnień}} \[
+				Y_{t} = \alpha + \sum_{i=0}^{\infty}
+					\beta_{i} X_{t-i} + \epsilon_{t}.
+			\]
+		\end{block}
+		\textbf{Nazewnictwo:}
+		\begin{itemize}
+			\item mnożnik krótkookresowy: $\beta_0,$
+			\item mnożnik długookresowy: $\sum_{i=1}^{\infty}\beta_{i}.$
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Model Koycka}
+		\begin{block}{\textbf{Model Koycka}}
+			Modelem Koycka nazywamy model z nieskończonym rozkładem opóźnień w
+			którym \[
+				\beta_{k} = \beta_{0} \lambda^{k},
+			\] gdzie $\lambda \in \left(0, 1\right),$ $k = 0, 1, 2, \ldots.$
+		\end{block}
+		\textbf{Nazewnictwo:}
+		\begin{itemize}
+			\item stopa zaniku rozkładu opóźnień: $\lambda.$
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Związek modelu Koycka z modelem AR(1)}
+		Niech dany będzie model Koycka postaci: \[
+			Y_{t} = \alpha + \sum_{i=0}^{\infty} \beta_{0} \lambda^{i} X_{t-i} + 
+				\epsilon_{t}.
+		\] Mnożąc powyższy model zapisany dla chwili czasu $t-1$ przez $\lambda$ 
+			otrzymujemy: \[
+			\lambda Y_{t-1} =
+				\lambda \alpha +
+				\sum_{i=0}^{\infty} \beta_{0} \lambda^{i+1} X_{t-1-i} + 
+				\lambda \epsilon_{t-1}.
+		\] Odjęcie od siebie dwóch przedstawionych postaci modelu daje nam: \[
+			Y_{t} - \lambda Y_{t-1} = \alpha\left(1 - \lambda\right) +
+				\beta_{0} X_{t} + \epsilon_{t} - \lambda \epsilon_{t-1}.
+		\] Co ostatecznie zapisać możemy jako: \[
+			Y_{t} = \mu + \lambda Y_{t-1} + \beta_{0} X_{t} + \eta_{t}.
+		\]
+	\end{frame}
+	
+	\begin{frame}{Model autoregresyjny z rozkładem opóźnień ADL}
+		\begin{block}{\textbf{Model autoregresyjny z rozkładem opóźnień}} \[
+				Y_{t} = \alpha_{0}
+					+ \sum_{i=1}^{m} \alpha_{i} Y_{t-i}
+					+ \sum_{i=0}^{k} \beta_{i} X_{t-i}
+					+ \epsilon_{t}.
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Model wyceny aktywów kapitałowych (CAPM)}
+		Zakładamy, że inwestor posiada portfel złożony z $n$ papierów wartościowych,
+		których udziały w portfelu opisuje poniższy wektor \[
+			\boldsymbol{x} = \left[x_1, x_2, \ldots, x_n\right]^{\prime}.
+		\]
+		Niech stopa zwrotu z poszczególnych papierów opisana będzie wektorem losowym \[
+			\boldsymbol{R} = \left[R_1, R_2, \ldots, R_n\right]^{\prime},
+		\] natomiast stopa zwrotu jaką inwestor mógłby osiągnąć bez ponoszenia ryzyka
+		(np. kupując obligacje rządowe) wartością \[
+			r_f.
+		\]
+	\end{frame}
+	
+	\begin{frame}{Model wyceny aktywów kapitałowych (CAPM)}
+		Niech oczekiwane stopy zwrotu z poszczególnych aktywów opisane będą 
+		wektorem wartości oczekiwanych \[
+			\boldsymbol{\mu} = \mathbb{E}\left(\boldsymbol{R}\right),
+		\]
+		natomiast ryzyko inwestycji macierzą wariancji-kowariancji \[
+			\boldsymbol{\Sigma} = \mbox{Var}\left(\boldsymbol{R}\right).
+		\]
+		Inwestor dąży maksymalizacji osiąganego zysku \[
+			{\boldsymbol{x}}^{\prime}\left(\mathbb{\mu}-r_{f}{\boldsymbol{1}}_{n}\right),
+		\] przy jednoczesnej minimalizacji ryzyka inwestycji \[
+			\min_{x}{\boldsymbol{x}}^{\prime}{\boldsymbol{\Sigma}}{\boldsymbol{x}}.
+		\]
+	\end{frame}
+	
+	\begin{frame}{Model wyceny aktywów kapitałowych (CAPM)}
+		Oznaczmy zysk z portfela rynkowego (np. WIG) symbolem $R_M.$ Wówczas
+		przy założeniu niezmienności ryzyka w czasie mamy \[
+			\mathbb{E}\left(R_i - r_f\right) = \frac{Cov\left(R_i, R_M\right)}{
+				Var\left(R_M\right)
+			} \mathbb{E}\left(R_M - r_f\right).
+		\]
+		Oznaczmy \[
+			\beta_i = \frac{Cov\left(R_i, R_M\right)}{Var\left(R_M\right)}
+		\]
+		\begin{block}{\textbf{Model wyceny aktywów kapitałowych}} \[
+			R_{i,t} - r_{f} = \alpha_{i} + \beta_{i} \left(R_{M,t}-r_{f}\right) +\epsilon_{i,t}.
+			\]
+		\end{block}
+		\begin{alert}{\textbf{Uwaga.}}
+			Im wartość współczynnika $\beta_i$ jest większa, tym bardziej agresywna
+			jest polityka inwestycyjna inwestora.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Model Famy i Frencha}
+		Chcąc lepiej opisać sytuację rynkową wprowadzamy do modelu CAMP dwa
+		dodatkowe czynniki:
+		\begin{itemize}
+			\item SMB --- czynnik uwzględniający wielkość spółki mierzonej 
+				kapitalizacją. Konstruowany jako różnica między stopą zwrotu 
+				z inwestycji w spółki z dużą kapitalizacją oraz stopą zwrotu 
+				z inwestycji w spółki z małą kapitalizacją.
+			\item HML --- czynnik uwzględniający iloraz wartości księgowej do
+				wartości rynkowej ($\frac{\mbox{BV}}{\mbox{MV}}$) spółki. 
+				Konstruowany jako różnica między stopą zwrotu z inwestycji w spółki 
+				o wysokim $\frac{\mbox{BV}}{\mbox{MV}}$ oraz stopy zwrotu z 		
+				inwestycji w spółki o niskim $\frac{\mbox{BV}}{\mbox{MV}}.$
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Model Famy i Frencha}
+		\begin{block}{\textbf{Model Famy i Frencha}} \[
+R_{i,t}-r_{t}=\alpha_{i}+\beta_{i}^{M}\left(R_{M,t}-r_{t}\right)+\beta_{i}^{SMB}\mbox{SMB}_{t}+\beta_{i}^{HML}\mbox{HML}_{t}+\varepsilon_{i,t}.
+			\]
+		\end{block}
+	\end{frame}
+	
+	\section*{}
+
+	\begin{frame}
+		\center
+		\Huge \bfseries
+		Pytania?
+	\end{frame}
+
+	\begin{frame}
+		\center
+		\Huge \bfseries
+		Dziękuję za uwagę!
+	\end{frame}
+
+\end{document}

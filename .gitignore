@@ -12,3 +12,6 @@
 *.docx
 *.lyx
 *.txt
+*~
+*.png
+.Rhistory

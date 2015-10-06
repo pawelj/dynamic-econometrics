@@ -1,0 +1,262 @@
+\documentclass[a4paper, 11pt]{beamer}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{units}
+\usepackage{wasysym}
+
+\mode<presentation> {
+	\usetheme{Frankfurt}
+	\setbeamercovered{transparent}
+	\usecolortheme{default}
+}
+
+\title{Ekonometria Dynamiczna}
+\subtitle{Wybrane modele wielowymiarowych szeregów czasowych}
+\author{mgr Paweł Jamer\thanks{pawel.jamer@gmail.com}}
+
+\begin{document}
+
+	\begin{frame}
+		\titlepage
+	\end{frame}
+
+	\section{Molde VAR}
+
+	\begin{frame}{Definicja}
+		\begin{block}{\textbf{Model Wektorowej Autoregresji (VAR)}}
+			Niech dany będzie szereg czasowy $\boldsymbol{Y}_{t} = 
+			\left[Y_{1,t}, Y_{2,t}, \ldots, Y_{n,t}\right]^{\prime}.$ 
+			Modelem wektorowej autoregresji o $p$ opóźnieniach szeregu 
+			$\boldsymbol{Y}_{t}$ nazwiemy model opisany równaniem
+			\[
+				\boldsymbol{Y}_{t} =
+					\boldsymbol{c} +
+					\boldsymbol{d} t +
+					\sum_{i=1}^{p}
+						\boldsymbol{A}_{i} \boldsymbol{Y}_{t-i} +
+						\boldsymbol{\epsilon}_{t},
+			\]
+			gdzie
+			\begin{itemize}
+				\item $\mathbb{E}\left(\boldsymbol{\epsilon}_{t}\right) = 
+					\boldsymbol{0},$
+				\item $\mathbb{E}\left(
+					\boldsymbol{\epsilon}_{t}
+					\boldsymbol{\epsilon}_{t}^{\prime}
+				\right) = \boldsymbol{\Omega}$ --- macierz dodatnio 
+				określona,
+				\item $\mathbb{E}\left(
+					\boldsymbol{\epsilon}_{t}
+					\boldsymbol{\epsilon}_{s}^{\prime}
+				\right) = \boldsymbol{0}$ dla $t \neq s.$
+			\end{itemize}
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Oznaczenia}
+		Symbole w równaniu modelu $\mbox{VAR}\left(p\right)$ 
+		oznaczają odpowiednio:
+		\begin{itemize}
+			\item $\boldsymbol{c}$ --- wektor stałych,
+			\item $\boldsymbol{d}$ --- wektor parametrów trendu,
+			\item $\boldsymbol{A}_{i}$ --- macierz parametrów 
+				związanych z $i$-tym opóźnieniem,
+			\item $\boldsymbol{\epsilon}_{t}$ --- wektor błędów.
+		\end{itemize}
+		\begin{alert}{\textbf{Uwaga.}}
+			Model wektorowej autoregresji o $p$ opóźnieniach przyjęło 
+			się oznaczać symbolem $\mbox{VAR}\left(p\right).$
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Właściwości}
+		Model $\mbox{VAR}:$
+		\begin{itemize}
+			\item ma często dobre właściwościami prognostyczne i 
+				symulacyjne,
+			\item dopuszcza pełną dowolność co do wartości parametrów,
+			\item uwzględnia występowanie zależności pomiędzy zmiennymi,
+			\item traktuje wszystkie zmienne jako objaśniane oraz 
+				objaśniające,
+			\item nie jest związany z żadną konkretną teorią 
+				ekonomiczną,
+			\item wymaga oszacowania wielu parametrów.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Zapis procesu VAR(p) w postaci VAR(1)}
+		Rozpatrzmy proces VAR(p) \[
+			\boldsymbol{Y}_{t} =
+				\boldsymbol{c} +
+				\boldsymbol{d} t +
+				\sum_{i=1}^{p}
+					\boldsymbol{A}_{i} \boldsymbol{Y}_{t-i} +
+					\boldsymbol{\epsilon}_{t}.
+		\]
+		Proces ten zapisać możemy jako \[
+			\left[\begin{matrix}
+				\boldsymbol{Y}_{t}\\
+				\boldsymbol{Y}_{t-1}\\
+				\vdots\\
+				\boldsymbol{Y}_{t-\left(p-1\right)}
+			\end{matrix}\right] = \left[\begin{matrix}
+				\boldsymbol{c}\\
+				\boldsymbol{0}\\
+				\vdots\\
+				\boldsymbol{0}
+			\end{matrix}\right] + \left[\begin{matrix}
+				\boldsymbol{d}\\
+				\boldsymbol{0}\\
+				\vdots\\
+				\boldsymbol{0}
+			\end{matrix}\right] t + \left[\begin{matrix}
+				\boldsymbol{A}_{1} & 
+				\cdots & \boldsymbol{A}_{p-1} & \boldsymbol{A}_{p}\\
+				\boldsymbol{I} & 
+				\cdots & \boldsymbol{0} & \boldsymbol{0}\\
+				\vdots & \ddots & \vdots & \vdots\\
+				\boldsymbol{0} & 
+				\cdots & \boldsymbol{I} & \boldsymbol{0}
+			\end{matrix}\right] \left[\begin{matrix}
+				\boldsymbol{Y}_{t-1}\\
+				\boldsymbol{Y}_{t-2}\\
+				\vdots\\
+				\boldsymbol{Y}_{t-p}
+			\end{matrix}\right] + \left[\begin{matrix}
+				\boldsymbol{\epsilon}_{t}\\
+				\boldsymbol{0}\\
+				\vdots\\
+				\boldsymbol{0}
+			\end{matrix}\right],
+		\]
+		a zatem jako proces VAR(1).
+	\end{frame}
+
+	\begin{frame}{Stabilność}
+		\begin{block}{\textbf{Stabilność}}
+			Model VAR nazywamy stabilnym, jeżeli \[
+				\lim_{k\rightarrow\infty}\left(\boldsymbol{A}_k\right) = 
+					\boldsymbol{0}.
+			\]
+		\end{block}
+		\begin{alert}{\textbf{Intuicja.}}
+			Wpływ zaburzenia $\boldsymbol{\epsilon}_t$ na
+			$\boldsymbol{Y}_t$ wygasa w miarę czasu.
+		\end{alert}
+		\begin{block}{\textbf{Twierdzenie}}
+			Niech dany będzie model VAR(p). Niech rozważany model VAR(p)
+			sprowadza się do modelu VAR(1) o macierzy parametrów
+			$\boldsymbol{A}.$ Wówczas wyjściowy model VAR(p) jest 
+			stabilny wtedy i tylko wtedy, gdy \[
+				\det\left(\boldsymbol{I} - \boldsymbol{A} B\right) = 0.
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Stacjonarność}
+	\end{frame}
+
+	\begin{frame}{Selekcja optymalnego $p$}
+		Metody selekcji optymalnej wartości parametru $p:$
+		\begin{itemize}
+			\item przesłanki teoretyczne,
+			\item kryteria informacyjne,
+			\item testy istotności parametrów dla ostatnich opóźnień,
+			\item analiza reszt modelu (np. statystyka Ljunga-Boxa).
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Selekcja optymalnego $p$ - kryteria informacyjne}
+		Wyboru optymalnej wartości parametru $p$ dokonuje się 
+		minimalizując wartość wybranego kryterium informacyjnego.
+		\begin{block}{\textbf{Kryterium Akaike}}
+			\[
+				AIC =
+					-2\frac{\ln\left(L\right)}{T} + 
+					k\frac{2}{T}
+			\]
+		\end{block}
+		\begin{block}{\textbf{Kryterium Schwarza}}
+			\[
+				SC =
+					-2\frac{\ln\left(L\right)}{T} +
+					k \frac{\ln\left(T\right)}{T}
+			\]
+		\end{block}
+		\begin{block}{\textbf{Kryterium Hannana-Quinna}}
+			\[
+				HQ = 
+					-2\frac{\ln\left(L\right)}{T} +
+					k \frac{\ln\left(\ln\left(T\right)\right)}{T}
+			\]
+		\end{block}
+	\end{frame}
+
+	\begin{frame}{Estymacja}
+W tym momencie szczególnie interesująca jest dla nas reguła mówiąca, że gdy każde z równań modelu SUR posiada ten sam zbiór zmiennych objaśniających, to jego estymacja sprowadza się do zastosowania klasycznej MNK dla każdego równania modelu osobno. Jako, że model VAR spełnia ten warunek, estymację jego parametrów przeprowadzić możemy w ten właśnie sposób.
+	\end{frame}
+	
+	\begin{frame}{Odpowiedź na impuls}
+		
+	\end{frame}
+	
+	\section{Przyczynowość}
+
+\begin{frame}{Definicja}
+Pojęcie przyczynowości zostało wyklarowane w toku dyskusji na temat definicji egzogeniczności (która de facto posiada na dzień dzisiejszy kilka znaczeń). Pojawia się ono chociażby w zaproponowanej przez Engle'a, Hendry'ego i Richarda definicji silnej egzogeniczności. W ramach przyczynowości w sensie Grangeraprzyczynowość w sensie Grangera (bo właśnie o takiej przyczynowości będzie tu mowa) wyróżnić możemy przyczynowość sensu stricto oraz pszyczynowość natychmiastową.
+
+• O X_{t}
+  powiemy, że jest pszyczyną Y_{t}
+  w sensie Grangeraprzyczyna w sensie Grangera (ozn. X_{t}\rightarrow Y_{t}
+ ), jeżeli\sigma^{2}\left(\tilde{Y}_{t}\mid{\bf \Omega}_{t-1}\right)<\sigma^{2}\left(\tilde{y}_{t}\mid{\bf \Omega}_{t-1}-{\bf \Omega}_{X_{t}}\right).
+ 
+
+• O X_{t}
+  powiemy, że jest natychmiastową przyczyną Y_{t}
+  w sensie Grangeranatychmiastowa przyczyna w sensie Grangera (ozn. X_{t}\Rightarrow Y_{t}
+ ), jeżeli\sigma^{2}\left(\tilde{Y}_{t}\mid{\bf \Omega}_{t-1}\cup{\bf \Omega}_{X_{t}}\right)<\sigma^{2}\left(\tilde{Y}_{t}\mid{\bf \Omega}_{t-1}-{\bf \Omega}_{X_{t}}\right).
+ 
+
+W powyższych definicjach symbole oznaczają odpowiednio
+
+• {\bf \Omega}_{t}
+  --- zbiór całej bieżącej i przeszłej informacji istniejącej w chwili t,
+
+• {\bf \Omega}_{t}\supseteq{\bf \Omega}_{X_{t}}
+  --- zbiór całej bieżącej i przeszłej informacji dotyczącej procesu X_{t}
+  istniejącej w chwili t,
+
+• \tilde{Y}_{t}
+  --- nieobciążona prognoza Y_{t},
+ 
+
+• \sigma^{2}\left(\tilde{Y}_{t}\mid A_{t}\right)
+  --- wariancja błędu predykcji Y_{t}
+  przy zadanym zbiorze informacji A_{t}.
+ 
+
+Mówiąc bardziej opisowo, przez X_{t}\rightarrow Y_{t}
+  rozumiemy, że uwzględnienie przeszłych wartości X_{t}
+  pozwala nam zwiększyć dokładność prognozy bieżącej wartości Y_{t}.
+  Podobnie przez X_{t}\Rightarrow Y_{t}
+  rozumiemy, że uwzględnienie obecnych i przeszłych wartości X_{t}
+  pozwala nam zwiększyć dokładność prognozy bieżącej wartości Y_{t}.
+ 
+\end{frame}
+
+	\section*{}
+
+	\begin{frame}
+		\center
+		\Huge \bfseries
+		Pytania?
+	\end{frame}
+
+	\begin{frame}
+		\center
+		\Huge \bfseries
+		Dziękuję za uwagę!
+	\end{frame}
+
+\end{document}

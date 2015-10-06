@@ -1,0 +1,293 @@
+\documentclass[a4paper, 11pt]{beamer}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{units}
+\usepackage{wasysym}
+
+\mode<presentation> {
+	\usetheme{Frankfurt}
+	\setbeamercovered{transparent}
+	\usecolortheme{default}
+}
+
+\title{Ekonometria Dynamiczna}
+\subtitle{Stacjonarność szeregów czasowych}
+\author{mgr Paweł Jamer\thanks{pawel.jamer@gmail.com}}
+
+\begin{document}
+
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	\section{Operatory}
+	
+	\begin{frame}{Operator cofania}
+		\begin{block}{\textbf{Operator cofania}}
+			Operatorem cofania nazwiemy taki operator $B,$ że \[
+				B X_{t} = X_{t-1},
+			\] gdzie $X_{t}$ jest dowolnym szeregiem czasowym.
+		\end{block}
+		Istnieje możliwość wielokrotnego zastosowania operatora cofania: \[
+			B^{k} X_{t} = \underset{k}{\underbrace{B B \cdots B}} X_{t} = X_{t-k}.
+		\]
+	\end{frame}
+	
+	\begin{frame}{Operator różnicowania}
+		\begin{block}{\textbf{Operator różnicowania}}
+			Operatorem różnicowania nazwiemy taki operator $\Delta,$ że \[
+				\Delta X_{t} = X_{t} - X_{t-1},
+			\] gdzie $X_{t}$ jest dowolnym szeregiem czasowym.
+		\end{block}
+		Istnieje możliwość wielokrotnego użycia operatora różnicowania: \[
+			\Delta^{k} X_{t} = \Delta^{k-1} \Delta X_{t}.
+		\]
+	\end{frame}
+	
+	\begin{frame}{Operator różnicowania (przykład)}
+		\begin{eqnarray*}
+			\Delta^{3} X_{t} & = & \Delta^{2} \Delta X_{t}\\
+				 & = & \Delta^{2} \left( X_{t} - X_{t-1} \right)\\
+				 & = & \Delta \Delta \left( X_{t} - X_{t-1} \right)\\
+				 & = & \Delta \left( \Delta X_{t} - \Delta X_{t-1} \right)\\
+				 & = & \Delta \left( X_{t} - X_{t-1} - X_{t-1} + X_{t-2} \right)\\
+				 & = & \Delta \left( X_{t} - 2 X_{t-1} + X_{t-2} \right)\\
+				 & = & \Delta X_{t} - 2 \Delta X_{t-1} + \Delta X_{t-2}\\
+				 & = & X_{t} - X_{t-1} - 2 X_{t-1} + 2 X_{t-2} + X_{t-2} - X_{t-3}\\
+				 & = & X_{t} - 3 X_{t-1} + 3 X_{t-2} - X_{t-3}.
+		\end{eqnarray*}
+	\end{frame}
+	
+	\begin{frame}{Operator różnicowania sezonowego}
+		\begin{block}{\textbf{Operator różnicowania sezonowego}}
+			Operatorem różnicowania sezonowego nazwiemy taki operator $\Delta_{s},$ że \[
+				\Delta_{s} X_{t} = X_{t} - X_{t-s},
+			\] gdzie $X_{t}$ jest dowolnym szeregiem czasowym.
+		\end{block}
+		Istnieje możliwość wielokrotnego użycia operatora różnicowania sezonowego: \[
+			\Delta^{k}_{s} X_{t} = \Delta^{k-1}_{s} \Delta_{s} X_{t}.
+		\]
+	\end{frame}
+	
+	\begin{frame}{Operator różnicowania sezonowego (przykład)}
+		\begin{eqnarray*}
+			\Delta^{3}_{12} X_{t} & = & \Delta^{2}_{12} \Delta_{12} X_{t}\\
+				 & = & \Delta^{2}_{12} \left( X_{t} - X_{t-12} \right)\\
+				 & = & \Delta_{12} \Delta_{12} \left( X_{t} - X_{t-12} \right)\\
+				 & = & \Delta_{12} \left( \Delta_{12} X_{t} - \Delta_{12} X_{t-12} \right)\\
+				 & = & \Delta_{12} \left( X_{t} - X_{t-12} - X_{t-12} + X_{t-24} \right)\\
+				 & = & \Delta_{12} \left( X_{t} - 2 X_{t-12} + X_{t-24} \right)\\
+				 & = & \Delta_{12} X_{t} - 2 \Delta_{12} X_{t-12} + \Delta_{12} X_{t-24}\\
+				 & = & X_{t} - X_{t-12} - 2 X_{t-12} + 2 X_{t-24} + X_{t-24} - X_{t-36}\\
+				 & = & X_{t} - 3 X_{t-12} + 3 X_{t-24} - X_{t-36}.
+		\end{eqnarray*}
+	\end{frame}
+	
+	\begin{frame}{Łączenie operatorów}
+		\textbf{Operatorem identycznościowym} nazwiemy taki operator $I$, że \[
+			I X_{t} = X_{t},
+		\] gdzie $X_{t}$ jest dowolnym szeregiem czasowym.
+
+		\begin{center}
+			\textbf{Przedstawione dotychczas operatory można łączyć, tworząc operatory bardziej skomplikowane.}
+		\end{center}
+
+		W szczególności operatorami identycznościowym oraz cofania można wyrazić operatory różnicowania: \begin{eqnarray*}
+			\Delta & = & I - B\\
+			\Delta_{s} & = & I - B^{s}
+		\end{eqnarray*}
+	\end{frame}
+	
+	\begin{frame}{Łączenie operatorów (przykład)}
+		Zdefiniujmy operator
+		\begin{eqnarray*}
+			\varphi\left(B\right) & = & B^{0} - \varphi_{1} B^{1} - \varphi_{2} B^{2} - \varphi_{3} B^{3} - \varphi_{4} B^{4}\\
+				  & = & I - \varphi_{1} B - \varphi_{2} B^{2} - \varphi_{3} B^{3} - \varphi_{4} B^{4}.
+		\end{eqnarray*}
+		Zastosujmy operator $\varphi\left(B\right)$ do szeregu $X_{t}$:
+		\begin{eqnarray*}
+			\varphi\left(B\right) X_{t} & = & \left(I - \varphi_{1} B - \varphi_{2} B^{2} - \varphi_{3} B^{3} - \varphi_{4} B^{4}\right) X_{t}\\
+				 & = & I X_{t} - \varphi_{1} B X_{t} - \varphi_{2} B^{2} X_{t} - \varphi_{3} B^{3} X_{t} - \varphi_{4} B^{4} X_{t}\\
+				 & = & X_{t} - \varphi_{1} X_{t-1} - \varphi_{2} X_{t-2} - \varphi_{3} X_{t-3} - \varphi_{4} X_{t-4}.
+		\end{eqnarray*}
+	\end{frame}
+	
+	\section{Stacjonarność}
+
+	\begin{frame}{Idea stacjonarności}
+		\begin{alert}{\textbf{Sytuacja}}
+			Założenie stałej natury właściwości probabilistycznych szeregu
+			czasowego ułatwia wnioskowanie na jego temat.
+		\end{alert}
+		\begin{block}{\textbf{Idea stacjonarności}}
+			Szereg czasowy określa się mianem stacjonarnego, kiedy jego 
+			właściwości probabilistyczne pozostają stałe w czasie.
+		\end{block}
+		\begin{alert}{\textbf{Wniosek}}
+			Stacjonarność szeregu czasowego, narzucając dodatkowe ograniczenie na 
+			model \frownie, umożliwia szersze wnioskowanie na jego temat \smiley.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Silna stacjonarność}
+		\begin{block}{\textbf{Silna stacjonarność}}
+			Szereg czasowy $X_t$ nazwiemy \textbf{silnie stacjonarnym} lub
+			\textbf{stacjonarnym w węższym sensie} (SWS), jeżeli \[
+				\left(X_{t_{1}}, X_{t_{2}}, \ldots, X_{t_{k}}\right)
+				\overset{\mathcal{D}}{\sim}
+				\left(X_{t_{1} + h}, X_{t_{2} + h}, \ldots, X_{t_{k} + h}\right)
+			\]
+			dla dowolnych $k,$ $h$ oraz $t_{1}, t_{2}, \ldots, t_{k}.$
+		\end{block}
+		\begin{alert}{\textbf{Zastosowanie}}
+			Dowolne wnioski wyciągnięte z obserwacji szeregu SWS w 
+			pewnym przedziale czasu możemy przenieść na dowolny inny przedział 
+			czasowy.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Właściwości szeregu czasowego SWS}
+		Wartość oczekiwana nie zależy od czasu, tzn. \[
+			\mathbb{E}\left(X_{t}\right) = \mathbb{E}\left(X_{1}\right).
+		\]
+		Wariancja nie zależy od czasu, tzn. \[
+			\mbox{Var}\left(X_{t}\right) = \mbox{Var}\left(X_{1}\right).
+		\]
+		Autokowariancja zależy wyłącznie od przesunięcia w czasie między 
+			obserwacjami, tzn. \[
+				\gamma_{X}\left(t, t + h\right) = \gamma_{X}\left(h\right),
+			\]
+		Autokorelacja zależy wyłącznie od przesunięcia w czasie między 
+			obserwacjami \[
+				\rho_{X}\left(t, t + h\right) = \rho_X\left(h\right).
+			\]
+	\end{frame}
+	
+	\begin{frame}{Słaba stacjonarność}
+		\begin{block}{\textbf{Słaba stacjonarność}}
+			Szereg czasowy $X_t$ nazwiemy \textbf{słabo stacjonarnym} lub
+			\textbf{stacjonarnym w szerwszym sensie} (SSS), jeżeli
+			\begin{itemize}
+				\item $\mathbb{E}\left(X_{t}\right) = \mathbb{E}\left(X_{1}\right)$,
+				\item $\mbox{Var}\left(X_{t}\right) < \infty$,
+				\item $\gamma_X\left(s, t\right) = \gamma_X\left(s + d, t + d
+					\right) = \gamma_X\left(h\right),$ $h = \left|t - s\right|,$
+			\end{itemize}
+			dla dowolnych $s$, $t$ oraz $d$.
+		\end{block}
+		\begin{alert}{\textbf{Zastosowanie}}
+			Pewne często używane własności szeregu czasowego SSS policzone dla 
+			danego okresu czasu możemy przenieść na dowolny inny okres czasu.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Właściwości szeregu czasowego SSS}
+		Wariancja nie zależy od czasu, tzn. \[
+			\mbox{Var}\left(X_{t}\right) = \mbox{Var}\left(X_{1}\right).
+		\]
+		Autokorelacja zależy wyłącznie od przesunięcia w czasie między 
+			obserwacjami \[
+				\rho_{X}\left(t, t + h\right) = \rho_X\left(h\right).
+			\]
+		Wartości funkcji autokowariancji są ograniczone z góry przez wartość 	
+		wariancji, tzn. \[
+			\left|\gamma_X\left(h\right)\right| \leq
+			\gamma_X\left(0\right) = \mbox{Var}\left(X_{t}\right).
+		\]
+		Funkcja autokowariancji jest symetryczna, tzn. \[
+			\gamma_X\left(h\right) = \gamma_X\left(-h\right).
+		\]
+	\end{frame}
+	
+	\begin{frame}{Związek SWS z SSS}
+		\begin{alert}{\textbf{Fakt}}
+			Jeżeli szereg czasowy jest silnie stacjonarny, to jest on również słabo stacjonarny.
+		\end{alert}
+	\end{frame}
+	
+	\section{Testowanie}
+	
+	\begin{frame}{Test Dickeya-Fullera (DF)}
+		Rozważamy model \[
+			X_{t} = \mu  + \alpha t + \varphi X_{t-1} + \epsilon_{t}.
+		\]
+		Modyfikujemy \begin{eqnarray*}
+			X_{t}-X_{t-1} & = & \mu + \alpha t + \varphi X_{t-1} - X_{t-1} + \epsilon_{t},\\
+			\Delta X_{t} & = & \mu + \alpha t + \left(\varphi - 1\right) X_{t-1} + \epsilon_{t}.
+		\end{eqnarray*}
+		Testujemy \[
+			\begin{cases}
+				H_{0}: & \varphi - 1 = 0\\
+				H_{1}: & \varphi - 1 < 0
+			\end{cases}
+		\]
+		Statystyka testowa \[
+			\mbox{DF} = \frac{\varphi - 1}{\mbox{SE}_{\varphi - 1}}
+		\]
+	\end{frame}
+	
+	\begin{frame}{Test Dickeya-Fullera (DF)}
+		\begin{alert}{\textbf{Interpretacja}}
+			Odrzucenie $H_0$ oznacza stacjonarność szeregu czasowego. Brak podstaw
+			do odrzucenia $H_0$ sugeruje, że być może proces $\Delta X_t$ jest
+			stacjonarny.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Test Dickeya-Fullera (DF)}
+		\begin{alert}{\textbf{Wada}}
+			Test DF charakteryzuje słaba moc. W statystyce oznacza to, że możemy
+			wykazać niestacjonarność szeregu czasowego w przypadku, gdy szereg
+			jest stacjonarny.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Rozszerzony test Dickeya-Fullera (ADF)}
+		Rozważamy model \[
+			X_{t} = \mu + \alpha t + \sum_{i=1}^{p} \beta_{i} X_{t-i} + \epsilon_{t}.
+		\]
+		Przekształcamy do postaci \[
+			\Delta X_{t} = \mu + \alpha t + \left(\beta_{1} - 1\right) X_{t-1} +  \sum_{i=1}^{p - 1} \gamma_{i} \Delta X_{t-i} + \epsilon_{t}.
+		\]
+		Testujemy \[
+			\begin{cases}
+				H_{0}: & \beta_{1} - 1 = 0\\
+				H_{1}: & \beta_{1} - 1 < 0
+			\end{cases}
+		\]
+		Statystyka testowa \[
+			\mbox{DF} = \frac{\beta_{1} - 1}{\mbox{SE}_{\beta_{1} - 1}}
+		\]
+	\end{frame}
+	
+	\begin{frame}{Test Kwiatkowskiego, Phillipsa, Schmidta i Shina (KPSS)}
+		Rozważamy model \begin{eqnarray*}
+			X_{t} & = & \mu_t + \alpha t + \sum_{i=1}^{p} \beta_{i} X_{t-i} + \epsilon_{t},\\
+			\mu_{t} & = & \mu_{t-1} + \eta_{t},\\
+			\epsilon_t & \mbox{iid} & \mathcal{N}\left(0, \sigma_{\epsilon}^2\right)\\
+			\eta_t & \mbox{iid} & \mathcal{N}\left(0, \sigma_{\eta}^2\right)\\
+		\end{eqnarray*}
+		Testujemy \[
+			\begin{cases}
+				H_{0}: & \sigma_{\eta}^2 = 0\\
+				H_{1}: & \sigma_{\eta}^2 > 0
+			\end{cases}
+		\]
+	\end{frame}
+
+	\section*{}
+
+	\begin{frame}
+		\center
+		\Huge \bfseries
+		Pytania?
+	\end{frame}
+
+	\begin{frame}
+		\center
+		\Huge \bfseries
+		Dziękuję za uwagę!
+	\end{frame}
+
+\end{document}
